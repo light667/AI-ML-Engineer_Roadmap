@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Roadmap AI/ML Engineer — 3 mois</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect } = React;
+
+
+const MONTHS = [
+  {
+    id: 1, icon: "🧱", title: "Mois 1", subtitle: "Fondations & ML Classique",
+    color: "#2563eb", light: "#eff6ff", border: "#bfdbfe",
+    goal: "Python · Maths ML · Scikit-learn · XGBoost · Pipelines · MLflow",
+    weeks: [
+      {
+        id: "w1", num: 1,
+        title: "Semaine 1 — Python Avancé & Outils Dev",
+        days: [
+          { d: "Lun", focus: "Python OOP, compréhensions, decorators, type hints, exceptions", tools: "Python 3.11+" },
+          { d: "Mar", focus: "Git & GitHub: branches, commits clairs, PRs, .gitignore, README", tools: "Git, GitHub" },
+          { d: "Mer", focus: "NumPy: arrays, broadcasting, opérations matricielles, indexing avancé", tools: "NumPy" },
+          { d: "Jeu", focus: "Pandas: DataFrames, nettoyage, groupby, merge, apply, lambda", tools: "Pandas" },
+          { d: "Ven", focus: "Matplotlib & Seaborn: barplots, heatmaps, pairplot, distributions", tools: "Matplotlib, Seaborn" },
+          { d: "Sam", focus: "Révision + setup propre: conda env, Jupyter, VS Code, extensions", tools: "conda, VS Code" },
+          { d: "Dim", focus: "Finalisation mini-projet + push GitHub avec README détaillé", tools: "GitHub" },
+        ],
+        mini: {
+          emoji: "🔍", title: "EDA Titanic Dataset",
+          desc: "Analyser le dataset Titanic: nettoyage données manquantes, stats descriptives, 6+ visualisations annotées, insights sur les facteurs de survie. README propre sur GitHub.",
+          tags: ["Pandas", "Seaborn", "EDA", "GitHub"],
+        }
+      },
+      {
+        id: "w2", num: 2,
+        title: "Semaine 2 — Mathématiques pour le ML",
+        days: [
+          { d: "Lun", focus: "Algèbre linéaire: vecteurs, matrices, produit matriciel, transposée avec NumPy", tools: "NumPy" },
+          { d: "Mar", focus: "Décompositions: SVD, valeurs propres/vecteurs — implémentation NumPy", tools: "NumPy, SciPy" },
+          { d: "Mer", focus: "Statistiques: distributions, variance, corrélation, tests statistiques (t-test, chi²)", tools: "SciPy, NumPy" },
+          { d: "Jeu", focus: "Calcul différentiel: dérivées partielles, gradient, descente de gradient codée", tools: "NumPy + math" },
+          { d: "Ven", focus: "Probabilités: Bayes, MLE, distributions (Normale, Bernoulli, Poisson)", tools: "SciPy, NumPy" },
+          { d: "Sam", focus: "Implémentation descente de gradient from scratch sur régression linéaire", tools: "NumPy" },
+          { d: "Dim", focus: "Finalisation mini-projet + notebook bien commenté/documenté", tools: "Jupyter" },
+        ],
+        mini: {
+          emoji: "📐", title: "PCA from Scratch avec NumPy",
+          desc: "Implémenter la PCA uniquement avec NumPy (zéro Scikit-learn). Appliquer sur MNIST ou Iris. Visualiser les composantes en 2D. Comparer avec sklearn.decomposition.PCA.",
+          tags: ["NumPy", "Algèbre linéaire", "PCA", "Visualisation"],
+        }
+      },
+      {
+        id: "w3", num: 3,
+        title: "Semaine 3 — ML Classique (Partie 1)",
+        days: [
+          { d: "Lun", focus: "Régression linéaire: OLS, gradient descent, métriques RMSE/MAE/R²", tools: "Scikit-learn" },
+          { d: "Mar", focus: "Régression logistique: sigmoïde, cross-entropy, multi-classe (OneVsRest)", tools: "Scikit-learn" },
+          { d: "Mer", focus: "Decision Tree & Random Forest: critères split, feature importance, bagging", tools: "Scikit-learn" },
+          { d: "Jeu", focus: "SVM & KNN: kernel trick, hyperplan de séparation, distance metrics", tools: "Scikit-learn" },
+          { d: "Ven", focus: "Validation: train/test split, k-fold CV, learning curves, bias-variance tradeoff", tools: "Scikit-learn" },
+          { d: "Sam", focus: "Feature engineering: encodage catégoriel (OHE, Target Encoding), normalisation, imputation", tools: "Sklearn, Pandas" },
+          { d: "Dim", focus: "Mini-projet: pipeline Scikit-learn complet + GridSearchCV", tools: "Scikit-learn" },
+        ],
+        mini: {
+          emoji: "📊", title: "Prédiction de Churn Client",
+          desc: "Classifieur sur Telco Churn Dataset (Kaggle). Tester RF, LogReg, SVM. GridSearchCV pour tuning. Métriques: F1-Score, ROC-AUC, confusion matrix. Rapport comparatif.",
+          tags: ["Scikit-learn", "GridSearchCV", "F1-Score", "ROC-AUC"],
+        }
+      },
+      {
+        id: "w4", num: 4,
+        title: "Semaine 4 — Boosting, Clustering & Pipeline Pro",
+        days: [
+          { d: "Lun", focus: "XGBoost & LightGBM: gradient boosting, DART, feature importance SHAP", tools: "XGBoost, LightGBM" },
+          { d: "Mar", focus: "Clustering: K-Means (elbow method), DBSCAN, silhouette score, t-SNE viz", tools: "Scikit-learn" },
+          { d: "Mer", focus: "Optuna: bayesian optimization, hyperparameter tuning automatisé", tools: "Optuna" },
+          { d: "Jeu", focus: "Scikit-learn Pipeline: ColumnTransformer, custom transformers, chaining steps", tools: "Scikit-learn" },
+          { d: "Ven", focus: "Model persistence: joblib. MLflow basics: tracking experiments, logging métriques", tools: "MLflow, joblib" },
+          { d: "Sam", focus: "Démarrage projet complet Mois 1 — architecture & EDA", tools: "" },
+          { d: "Dim", focus: "Finalisation projet complet + README professionnel + push GitHub", tools: "GitHub" },
+        ],
+        mini: {
+          emoji: "🏠", title: "House Prices Kaggle Competition",
+          desc: "Compétition Kaggle House Prices: feature engineering avancé, XGBoost + LightGBM, Optuna pour tuning, pipeline Scikit-learn complet, tracking MLflow, soumission sur Kaggle.",
+          tags: ["XGBoost", "LightGBM", "Optuna", "MLflow", "Kaggle"],
+        }
+      },
+    ],
+    full: {
+      title: "Détection de Fraude Bancaire — End-to-End ML Pipeline",
+      desc: "Pipeline ML complet sur Credit Card Fraud Dataset (Kaggle). EDA → Feature Engineering → SMOTE pour déséquilibre de classes → Comparaison RF/XGBoost/LightGBM → Pipeline Scikit-learn → Tracking MLflow → Sauvegarde du meilleur modèle. README pro avec résultats et visualisations.",
+      deliverables: ["Notebook EDA détaillé (30+ cellules)", "Pipeline Scikit-learn réutilisable", "Rapport comparatif des modèles (tableau + graphiques)", "MLflow tracking screenshots", "README structuré avec métriques finales"],
+      stack: "Pandas · Scikit-learn · XGBoost · MLflow · imbalanced-learn",
+      duration: "3-4 jours (fin semaine 4)",
+    }
+  },
+  {
+    id: 2, icon: "🧠", title: "Mois 2", subtitle: "Deep Learning & LLMs",
+    color: "#7c3aed", light: "#f5f3ff", border: "#ddd6fe",
+    goal: "PyTorch · CNNs · Transformers · Hugging Face · RAG · LangChain",
+    weeks: [
+      {
+        id: "w5", num: 5,
+        title: "Semaine 5 — Deep Learning avec PyTorch",
+        days: [
+          { d: "Lun", focus: "PyTorch: Tensors, opérations GPU/CPU, autograd, computational graph", tools: "PyTorch" },
+          { d: "Mar", focus: "MLP: couches Linear, fonctions d'activation (ReLU, Sigmoid, Tanh, GELU)", tools: "PyTorch" },
+          { d: "Mer", focus: "Loss functions (CrossEntropy, MSE, BCE), Optimizers (SGD, Adam, AdamW)", tools: "PyTorch" },
+          { d: "Jeu", focus: "Training loop: forward/backward pass, gradient clipping, LR schedulers", tools: "PyTorch" },
+          { d: "Ven", focus: "Dataset & DataLoader PyTorch, Dropout, BatchNorm, L2 regularisation", tools: "PyTorch" },
+          { d: "Sam", focus: "TensorBoard / W&B pour visualiser training, debugging loss explosion", tools: "TensorBoard, W&B" },
+          { d: "Dim", focus: "Finalisation mini-projet + analyse des erreurs + push GitHub", tools: "GitHub" },
+        ],
+        mini: {
+          emoji: "🔢", title: "Classifieur MNIST from Scratch",
+          desc: "MLP PyTorch sur MNIST. Target: >97% accuracy. Visualiser courbes loss/accuracy, comparer 3 architectures différentes, afficher les prédictions incorrectes. TensorBoard logs.",
+          tags: ["PyTorch", "MLP", "MNIST", "TensorBoard"],
+        }
+      },
+      {
+        id: "w6", num: 6,
+        title: "Semaine 6 — CNNs & Computer Vision",
+        days: [
+          { d: "Lun", focus: "CNNs: convolutions, pooling, feature maps, stride, padding, receptive field", tools: "PyTorch" },
+          { d: "Mar", focus: "Architectures: LeNet → ResNet (skip connections) → EfficientNet — intuition & code", tools: "PyTorch, torchvision" },
+          { d: "Mer", focus: "Transfer Learning: feature extraction vs full fine-tuning, quand utiliser quoi", tools: "torchvision" },
+          { d: "Jeu", focus: "Data augmentation: RandomCrop, Flip, ColorJitter, MixUp, albumentations", tools: "torchvision, albumentations" },
+          { d: "Ven", focus: "Mixed precision training (fp16), learning rate finder, PyTorch Lightning intro", tools: "PyTorch Lightning" },
+          { d: "Sam", focus: "Démarrage mini-projet CNN + setup Gradio pour démo", tools: "Gradio" },
+          { d: "Dim", focus: "Finalisation + déploiement Gradio + analyse des erreurs du modèle", tools: "Gradio" },
+        ],
+        mini: {
+          emoji: "🐱", title: "Chats vs Chiens (Transfer Learning)",
+          desc: "EfficientNet pré-entraîné sur dataset Kaggle Chats/Chiens. Feature extraction puis full fine-tuning. Data augmentation complète. Comparer les 2 approches. Interface démo Gradio.",
+          tags: ["CNN", "Transfer Learning", "EfficientNet", "Gradio"],
+        }
+      },
+      {
+        id: "w7", num: 7,
+        title: "Semaine 7 — NLP & Architecture Transformer",
+        days: [
+          { d: "Lun", focus: "NLP basics: tokenisation, embeddings, Word2Vec, GloVe — intuition & implémentation", tools: "Gensim, NLTK" },
+          { d: "Mar", focus: "Attention mechanism: scaled dot-product, self-attention — coder from scratch PyTorch", tools: "PyTorch" },
+          { d: "Mer", focus: "Architecture Transformer complète: multi-head attention, FFN, positional encoding", tools: "Paper + PyTorch" },
+          { d: "Jeu", focus: "Hugging Face 🤗: AutoModel, AutoTokenizer, pipeline(), datasets, hub", tools: "Hugging Face" },
+          { d: "Ven", focus: "Fine-tuning avec Trainer API: TrainingArguments, compute_metrics, callbacks", tools: "HF Trainer" },
+          { d: "Sam", focus: "Démarrage mini-projet BERT + push modèle sur HuggingFace Hub", tools: "HF Hub" },
+          { d: "Dim", focus: "Finalisation + évaluation complète + README du modèle sur HF Hub", tools: "HF Hub" },
+        ],
+        mini: {
+          emoji: "💬", title: "Analyse de Sentiment BERT (IMDB)",
+          desc: "Fine-tuner bert-base-uncased sur IMDB avec HF Trainer. Baseline: TF-IDF + LogReg. Comparer performances. Publier le modèle fine-tuné sur HuggingFace Hub avec model card.",
+          tags: ["BERT", "Hugging Face", "HF Hub", "Sentiment Analysis"],
+        }
+      },
+      {
+        id: "w8", num: 8,
+        title: "Semaine 8 — LLMs, Prompt Engineering & RAG",
+        days: [
+          { d: "Lun", focus: "LLM APIs: OpenAI GPT-4o, Anthropic Claude, Gemini — usage, pricing, bonnes pratiques", tools: "OpenAI, Anthropic API" },
+          { d: "Mar", focus: "Prompt Engineering: zero-shot, few-shot, chain-of-thought, system prompts, templates", tools: "Python + API" },
+          { d: "Mer", focus: "LangChain: LCEL, chains, prompt templates, output parsers, conversation memory", tools: "LangChain" },
+          { d: "Jeu", focus: "RAG: embeddings, chunking strategies, vector stores (FAISS, ChromaDB), retrieval", tools: "LangChain, ChromaDB" },
+          { d: "Ven", focus: "LoRA & QLoRA: fine-tuning LLMs efficacement, PEFT library, bitsandbytes", tools: "HuggingFace PEFT" },
+          { d: "Sam", focus: "Démarrage mini-projet RAG + interface Streamlit", tools: "Streamlit" },
+          { d: "Dim", focus: "Finalisation + déploiement HuggingFace Spaces (gratuit)", tools: "HF Spaces" },
+        ],
+        mini: {
+          emoji: "📚", title: "Chatbot RAG sur PDF",
+          desc: "Chatbot qui répond aux questions sur un document PDF. LangChain + ChromaDB + LLM API. Interface Streamlit avec historique de chat et sources citées. Déployé sur HF Spaces.",
+          tags: ["RAG", "LangChain", "ChromaDB", "Streamlit", "HF Spaces"],
+        }
+      },
+    ],
+    full: {
+      title: "Assistant IA Multi-Documents — Application RAG Complète",
+      desc: "Application web: upload multi-PDF + Q&A conversationnel avec historique. Backend: LangChain + ChromaDB + LLM API. Interface: Streamlit ou Gradio. Features: historique de chat, citations des sources, résumé automatique. Déployé en ligne sur HuggingFace Spaces (100% gratuit).",
+      deliverables: ["App déployée accessible en ligne (URL publique)", "Backend RAG robuste avec gestion multi-documents", "Interface UI propre avec historique", "README avec architecture diagram", "Demo vidéo 1-2 min"],
+      stack: "LangChain · ChromaDB · OpenAI/Claude API · Streamlit · HuggingFace Spaces",
+      duration: "4-5 jours (fin semaine 8)",
+    }
+  },
+  {
+    id: 3, icon: "🚀", title: "Mois 3", subtitle: "MLOps & AI Engineering",
+    color: "#059669", light: "#ecfdf5", border: "#a7f3d0",
+    goal: "FastAPI · Docker · AWS/GCP · CI/CD · AI Agents · LangGraph · Portfolio Pro",
+    weeks: [
+      {
+        id: "w9", num: 9,
+        title: "Semaine 9 — MLOps & API de Production",
+        days: [
+          { d: "Lun", focus: "FastAPI: routing, async endpoints, dependency injection, middleware", tools: "FastAPI" },
+          { d: "Mar", focus: "Pydantic v2: validation de données, schemas, validators, response models", tools: "Pydantic" },
+          { d: "Mer", focus: "Docker: Dockerfile, layers, multi-stage builds, docker-compose pour ML apps", tools: "Docker" },
+          { d: "Jeu", focus: "MLflow avancé: Model Registry, staging/production, serving avec mlflow server", tools: "MLflow" },
+          { d: "Ven", focus: "Tests pour ML: pytest, tests unitaires, tests API avec TestClient, mocking", tools: "pytest" },
+          { d: "Sam", focus: "Démarrage mini-projet FastAPI + Docker + documentation Swagger", tools: "FastAPI" },
+          { d: "Dim", focus: "Finalisation + tests passants + push GitHub avec CI basique", tools: "GitHub Actions" },
+        ],
+        mini: {
+          emoji: "⚡", title: "ML API avec FastAPI + Docker",
+          desc: "Wrapper le modèle fraude bancaire (M1) dans une API FastAPI. Endpoints: /predict, /batch_predict, /health. Dockeriser. Tests pytest. Documentation Swagger auto-générée.",
+          tags: ["FastAPI", "Docker", "pytest", "Swagger"],
+        }
+      },
+      {
+        id: "w10", num: 10,
+        title: "Semaine 10 — Cloud & CI/CD",
+        days: [
+          { d: "Lun", focus: "AWS basics: IAM, S3, EC2, ECR, VPC — console + CLI setup (ou GCP équivalents)", tools: "AWS CLI" },
+          { d: "Mar", focus: "Déploiement: push image Docker → AWS ECR → run sur EC2 ou ECS/Fargate", tools: "AWS" },
+          { d: "Mer", focus: "GitHub Actions: workflow CI (lint+test+build), workflow CD (deploy automatique)", tools: "GitHub Actions" },
+          { d: "Jeu", focus: "Monitoring ML: Evidently AI (data drift, performance dégradation), alertes", tools: "Evidently AI" },
+          { d: "Ven", focus: "Sécurité: .env, AWS Secrets Manager, HTTPS, validation des inputs API", tools: "AWS, Python" },
+          { d: "Sam", focus: "Démarrage mini-projet CI/CD complet — pipeline GitHub Actions", tools: "" },
+          { d: "Dim", focus: "Finalisation + URL publique fonctionnelle + monitoring actif", tools: "" },
+        ],
+        mini: {
+          emoji: "☁️", title: "Pipeline CI/CD Complet sur AWS",
+          desc: "GitHub Actions qui: 1) Lance tests pytest 2) Build image Docker 3) Push AWS ECR 4) Déploie sur EC2/ECS. API ML accessible via URL publique HTTPS avec monitoring Evidently.",
+          tags: ["AWS", "GitHub Actions", "CI/CD", "Evidently AI"],
+        }
+      },
+      {
+        id: "w11", num: 11,
+        title: "Semaine 11 — AI Engineering Avancé",
+        days: [
+          { d: "Lun", focus: "RAG avancé: chunking sémantique, parent-child retrieval, HyDE, reranking Cohere", tools: "LlamaIndex, LangChain" },
+          { d: "Mar", focus: "Vector DB avancées: Pinecone ou Weaviate — indexation, metadata filtering, hybrid search", tools: "Pinecone / Weaviate" },
+          { d: "Mer", focus: "AI Agents: function calling (OpenAI), tool use (Anthropic), ReAct pattern", tools: "OpenAI, Anthropic" },
+          { d: "Jeu", focus: "LangGraph: state machines d'agents, workflows conditionnels, multi-agents", tools: "LangGraph" },
+          { d: "Ven", focus: "Évaluation LLMs: RAGAS (faithfulness, relevancy, context precision), benchmarks", tools: "RAGAS" },
+          { d: "Sam", focus: "Démarrage mini-projet AI Agent + évaluation RAGAS", tools: "" },
+          { d: "Dim", focus: "Finalisation + rapport d'évaluation RAGAS + push GitHub", tools: "" },
+        ],
+        mini: {
+          emoji: "🤖", title: "AI Research Agent avec LangGraph",
+          desc: "Agent capable de: rechercher sur le web, lire des PDFs, effectuer des calculs, synthétiser une réponse structurée. LangGraph + OpenAI function calling. Évalué avec RAGAS.",
+          tags: ["LangGraph", "AI Agent", "Function Calling", "RAGAS"],
+        }
+      },
+      {
+        id: "w12", num: 12,
+        title: "Semaine 12 — Portfolio & Préparation Entretiens",
+        days: [
+          { d: "Lun", focus: "GitHub Profile: README profil, épingler meilleurs repos, badges, contribution graph", tools: "GitHub" },
+          { d: "Mar", focus: "LinkedIn: optimiser headline/about/skills, 2 posts techniques sur tes projets", tools: "LinkedIn" },
+          { d: "Mer", focus: "CV ATS-friendly: compétences ML/AI, projets quantifiés, mots-clés recruteurs", tools: "Canva/LaTeX" },
+          { d: "Jeu", focus: "Entretiens ML: top 50 questions théoriques (attention, overfitting, métriques, etc.)", tools: "Notion/Anki" },
+          { d: "Ven", focus: "Coding interviews: LeetCode bases (arrays, hashmaps, sliding window) — 5 exercices", tools: "LeetCode" },
+          { d: "Sam", focus: "Finalisation projet phare M3 + portfolio website", tools: "" },
+          { d: "Dim", focus: "Mock interview simulé + revue complète portfolio + candidatures", tools: "" },
+        ],
+        mini: {
+          emoji: "🌐", title: "Portfolio Website Personnel",
+          desc: "Site portfolio avec GitHub Pages ou Vercel. 3 projets phares présentés, stack de compétences, 1-2 articles de blog techniques. Design propre, responsive, liens LinkedIn/GitHub/HF.",
+          tags: ["GitHub Pages", "Portfolio", "Personal Brand", "Blog"],
+        }
+      },
+    ],
+    full: {
+      title: "Plateforme AI Production-Ready — Projet Phare Portfolio",
+      desc: "Plateforme AI complète en production: FastAPI backend + RAG avancé (LlamaIndex + Pinecone) + AI Agent (LangGraph) + Docker + CI/CD GitHub Actions + déploiement AWS/GCP. Interface utilisateur Next.js ou Streamlit. Monitoring Evidently. C'est TON projet vedette pour tous les entretiens.",
+      deliverables: ["Application déployée & accessible en ligne (URL publique)", "Code source propre + architecture diagram dans README", "Tests automatisés (>70% coverage)", "Pipeline CI/CD opérationnel", "Demo vidéo 3 min sur YouTube/Loom", "Article de blog technique sur LinkedIn"],
+      stack: "FastAPI · LlamaIndex · Pinecone · LangGraph · Docker · AWS/GCP · GitHub Actions",
+      duration: "5-7 jours (semaine 12)",
+    }
+  }
+];
+
+const TIPS = [
+  { icon: "⏰", text: "4-6h/jour semaine · 6-8h week-end" },
+  { icon: "💻", text: "Coder chaque jour — même 30 min comptent" },
+  { icon: "📤", text: "Tout pusher sur GitHub avec commits clairs" },
+  { icon: "🐦", text: "Partager tes avancées sur LinkedIn" },
+  { icon: "🏆", text: "1-2 compétitions Kaggle pour le CV" },
+  { icon: "📖", text: "Papers With Code pour rester à jour" },
+];
+
+const JOBS = [
+  { title: "Junior AI Engineer", salary: "$55-90k/an (remote)", demand: 5 },
+  { title: "Junior ML Engineer", salary: "$50-85k/an (remote)", demand: 5 },
+  { title: "Junior LLM Engineer", salary: "$60-95k/an (remote)", demand: 5 },
+  { title: "Junior MLOps Engineer", salary: "$55-85k/an (remote)", demand: 4 },
+];
+
+const STORAGE_KEY = "aiml-roadmap-progress-v1";
+
+function loadSaved() {
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+export default function Roadmap() {
+  const [activeMonth, setActiveMonth] = useState(1);
+  const [openWeek, setOpenWeek] = useState(null);
+  const [checked, setChecked] = useState(loadSaved);
+  const [tab, setTab] = useState("plan"); // plan | tips | jobs
+
+  // Sauvegarde automatique de la progression dans le navigateur
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(checked));
+    } catch (e) {
+      // stockage indisponible (mode privé, etc.) — on ignore silencieusement
+    }
+  }, [checked]);
+
+  const month = MONTHS.find(m => m.id === activeMonth);
+
+  const toggle = (id) => setChecked(p => ({ ...p, [id]: !p[id] }));
+  const toggleWeek = (id) => setOpenWeek(p => p === id ? null : id);
+
+  // Count completed items per month
+  const monthDayCount = month.weeks.reduce((acc, w) => acc + w.days.length, 0);
+  const monthChecked = month.weeks.reduce((acc, w) =>
+    acc + w.days.filter((_, di) => checked[`${w.id}-${di}`]).length, 0);
+  const pct = Math.round((monthChecked / monthDayCount) * 100);
+
+  return (
+    <div style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif", maxWidth: 860, margin: "0 auto", padding: 16, background: "#f1f5f9", minHeight: "100vh" }}>
+
+      {/* HERO */}
+      <div style={{
+        background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 45%, #312e81 100%)",
+        borderRadius: 20, padding: "28px 22px 22px", color: "white", marginBottom: 16,
+        boxShadow: "0 8px 32px rgba(15,23,42,0.35)"
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
+          <span style={{ fontSize: 32 }}>🛸</span>
+          <div>
+            <div style={{ fontSize: 22, fontWeight: 900, letterSpacing: "-0.5px" }}>Roadmap AI/ML Engineer</div>
+            <div style={{ fontSize: 13, opacity: 0.7, marginTop: 2 }}>3 mois · Junior Job-Ready · Remote-Proof</div>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", gap: 8, marginTop: 18, marginBottom: 4 }}>
+          {MONTHS.map(m => (
+            <button
+              key={m.id}
+              onClick={() => { setActiveMonth(m.id); setOpenWeek(null); }}
+              style={{
+                flex: 1, cursor: "pointer",
+                background: activeMonth === m.id ? "rgba(255,255,255,0.18)" : "rgba(255,255,255,0.06)",
+                border: activeMonth === m.id ? `2px solid ${m.color}` : "2px solid transparent",
+                borderRadius: 14, padding: "10px 6px", color: "white",
+                transition: "all 0.15s",
+              }}
+            >
+              <div style={{ fontSize: 22 }}>{m.icon}</div>
+              <div style={{ fontSize: 11, fontWeight: 800, marginTop: 4, opacity: activeMonth === m.id ? 1 : 0.7 }}>{m.title}</div>
+              <div style={{ fontSize: 10, opacity: 0.6, marginTop: 1 }}>{m.subtitle.split("&")[0].trim()}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* TABS */}
+      <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
+        {[["plan", "📅 Plan"], ["tips", "💡 Conseils"], ["jobs", "🎯 Objectifs"]].map(([t, label]) => (
+          <button key={t} onClick={() => setTab(t)} style={{
+            flex: 1, padding: "9px 4px", borderRadius: 10, cursor: "pointer", fontWeight: 700, fontSize: 12,
+            background: tab === t ? month.color : "white",
+            color: tab === t ? "white" : "#64748b",
+            border: tab === t ? `2px solid ${month.color}` : "2px solid #e2e8f0",
+            transition: "all 0.15s",
+          }}>{label}</button>
+        ))}
+      </div>
+
+      {tab === "plan" && (
+        <>
+          {/* MONTH HEADER */}
+          <div style={{
+            background: "white", border: `2px solid ${month.border}`,
+            borderRadius: 16, padding: 18, marginBottom: 14,
+            borderLeft: `5px solid ${month.color}`
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+              <span style={{ fontSize: 28 }}>{month.icon}</span>
+              <div>
+                <div style={{ fontSize: 17, fontWeight: 900, color: month.color }}>{month.title} — {month.subtitle}</div>
+                <div style={{ fontSize: 12, color: "#64748b", marginTop: 3 }}>{month.goal}</div>
+              </div>
+            </div>
+            {/* Progress bar */}
+            <div style={{ marginTop: 10 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
+                <span style={{ fontSize: 11, color: "#64748b", fontWeight: 600 }}>Progression</span>
+                <span style={{ fontSize: 11, fontWeight: 800, color: month.color }}>{monthChecked}/{monthDayCount} jours · {pct}%</span>
+              </div>
+              <div style={{ height: 7, background: "#e2e8f0", borderRadius: 99 }}>
+                <div style={{ height: "100%", width: `${pct}%`, background: month.color, borderRadius: 99, transition: "width 0.3s" }} />
+              </div>
+            </div>
+          </div>
+
+          {/* WEEKS */}
+          {month.weeks.map((week, wi) => (
+            <div key={week.id} style={{ marginBottom: 10, borderRadius: 14, overflow: "hidden", border: "1.5px solid #e2e8f0", background: "white", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+              <button
+                onClick={() => toggleWeek(week.id)}
+                style={{
+                  width: "100%", display: "flex", alignItems: "center",
+                  justifyContent: "space-between", padding: "13px 16px",
+                  background: openWeek === week.id ? month.light : "white",
+                  border: "none", cursor: "pointer", textAlign: "left",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{
+                    width: 30, height: 30, borderRadius: "50%",
+                    background: month.color, color: "white",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: 12, fontWeight: 800, flexShrink: 0
+                  }}>S{week.num}</div>
+                  <span style={{ fontWeight: 700, fontSize: 13, color: "#1e293b" }}>{week.title}</span>
+                </div>
+                <span style={{ color: month.color, fontSize: 16, marginLeft: 8 }}>
+                  {openWeek === week.id ? "▲" : "▼"}
+                </span>
+              </button>
+
+              {openWeek === week.id && (
+                <div style={{ padding: "2px 14px 16px" }}>
+                  {/* Days */}
+                  <div style={{ overflowX: "auto", marginBottom: 14 }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12.5 }}>
+                      <thead>
+                        <tr style={{ background: "#f8fafc" }}>
+                          <th style={{ padding: "8px 10px", textAlign: "left", color: "#94a3b8", fontWeight: 600, width: 56, borderBottom: "1px solid #e2e8f0" }}>Jour</th>
+                          <th style={{ padding: "8px 10px", textAlign: "left", color: "#94a3b8", fontWeight: 600, borderBottom: "1px solid #e2e8f0" }}>Ce que tu apprends</th>
+                          <th style={{ padding: "8px 10px", textAlign: "left", color: "#94a3b8", fontWeight: 600, width: 140, borderBottom: "1px solid #e2e8f0" }}>Outils</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {week.days.map((day, di) => {
+                          const iid = `${week.id}-${di}`;
+                          const done = !!checked[iid];
+                          return (
+                            <tr key={di} style={{ borderBottom: "1px solid #f1f5f9", background: done ? "#f0fdf4" : "white", transition: "background 0.1s" }}>
+                              <td style={{ padding: "9px 10px" }}>
+                                <div
+                                  onClick={() => toggle(iid)}
+                                  style={{ display: "flex", alignItems: "center", gap: 7, cursor: "pointer" }}
+                                >
+                                  <div style={{
+                                    width: 18, height: 18, borderRadius: 5, flexShrink: 0,
+                                    background: done ? "#22c55e" : "white",
+                                    border: `2px solid ${done ? "#22c55e" : "#cbd5e1"}`,
+                                    display: "flex", alignItems: "center", justifyContent: "center",
+                                    fontSize: 10, color: "white", fontWeight: 800,
+                                    transition: "all 0.15s",
+                                  }}>{done ? "✓" : ""}</div>
+                                  <span style={{ fontWeight: 700, color: done ? "#22c55e" : "#475569", fontSize: 12 }}>{day.d}</span>
+                                </div>
+                              </td>
+                              <td style={{ padding: "9px 10px", color: done ? "#9ca3af" : "#334155", textDecoration: done ? "line-through" : "none", lineHeight: 1.4 }}>
+                                {day.focus}
+                              </td>
+                              <td style={{ padding: "9px 10px" }}>
+                                {day.tools && (
+                                  <span style={{
+                                    fontSize: 10.5, color: month.color,
+                                    background: month.light, padding: "2px 8px",
+                                    borderRadius: 20, fontWeight: 600, whiteSpace: "nowrap"
+                                  }}>{day.tools}</span>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Mini project */}
+                  <div style={{
+                    background: `linear-gradient(135deg, ${month.light} 0%, #fff 100%)`,
+                    border: `1.5px solid ${month.border}`,
+                    borderRadius: 12, padding: 14
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 7 }}>
+                      <span style={{ fontSize: 22 }}>{week.mini.emoji}</span>
+                      <div>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.5px" }}>Mini-Projet Semaine</div>
+                        <div style={{ fontSize: 14, fontWeight: 800, color: month.color }}>{week.mini.title}</div>
+                      </div>
+                    </div>
+                    <p style={{ fontSize: 12.5, color: "#475569", margin: "0 0 10px", lineHeight: 1.55 }}>{week.mini.desc}</p>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+                      {week.mini.tags.map(tag => (
+                        <span key={tag} style={{
+                          background: month.color, color: "white",
+                          padding: "3px 10px", borderRadius: 20,
+                          fontSize: 10.5, fontWeight: 700,
+                        }}>{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+
+          {/* FULL PROJECT */}
+          <div style={{
+            background: "white",
+            border: `2px solid ${month.color}`,
+            borderRadius: 18, padding: 20, marginTop: 8,
+            boxShadow: `0 4px 20px ${month.color}22`
+          }}>
+            <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 10 }}>
+              <span style={{ fontSize: 28 }}>🏆</span>
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.5px" }}>Projet Phare — {month.title}</div>
+                <div style={{ fontSize: 15, fontWeight: 900, color: month.color, lineHeight: 1.3 }}>{month.full.title}</div>
+              </div>
+            </div>
+            <p style={{ fontSize: 13, color: "#475569", marginBottom: 14, lineHeight: 1.6 }}>{month.full.desc}</p>
+
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ fontSize: 12, fontWeight: 800, color: "#1e293b", marginBottom: 7 }}>📦 Livrables attendus:</div>
+              {month.full.deliverables.map((d, i) => (
+                <div key={i} style={{ display: "flex", gap: 7, fontSize: 12.5, color: "#475569", marginBottom: 5, alignItems: "flex-start" }}>
+                  <span style={{ color: month.color, fontWeight: 800, flexShrink: 0 }}>→</span>
+                  <span>{d}</span>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              <div style={{ fontSize: 12, background: month.light, color: month.color, padding: "5px 12px", borderRadius: 20, fontWeight: 700 }}>
+                🛠 {month.full.stack}
+              </div>
+              <div style={{ fontSize: 12, background: "#fef3c7", color: "#92400e", padding: "5px 12px", borderRadius: 20, fontWeight: 700 }}>
+                ⏱ {month.full.duration}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {tab === "tips" && (
+        <div>
+          <div style={{ background: "white", borderRadius: 16, padding: 20, marginBottom: 12, border: "1.5px solid #e2e8f0" }}>
+            <div style={{ fontWeight: 900, fontSize: 16, marginBottom: 14, color: "#1e293b" }}>💡 Règles pour réussir ces 3 mois</div>
+            {TIPS.map((t, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "12px 14px", background: "#f8fafc", borderRadius: 12, marginBottom: 8 }}>
+                <span style={{ fontSize: 22, flexShrink: 0 }}>{t.icon}</span>
+                <span style={{ fontSize: 13.5, color: "#334155", lineHeight: 1.45, fontWeight: 500 }}>{t.text}</span>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ background: "white", borderRadius: 16, padding: 20, marginBottom: 12, border: "1.5px solid #e2e8f0" }}>
+            <div style={{ fontWeight: 900, fontSize: 16, marginBottom: 14, color: "#1e293b" }}>📚 Ressources Clés</div>
+            {[
+              ["🎓", "Fast.ai", "Cours DL pratique et gratuit — parfait pour démarrer"],
+              ["🤗", "Hugging Face Docs", "La référence pour tout ce qui est NLP et LLMs"],
+              ["📄", "Papers With Code", "Les derniers papiers avec le code officiel"],
+              ["🏆", "Kaggle", "Compétitions + notebooks de la communauté + datasets"],
+              ["📺", "Andrej Karpathy (YouTube)", "Les meilleures vidéos sur les LLMs — Neural Nets: Zero to Hero"],
+              ["💬", "Discord ML France", "Communauté francophone pour les questions"],
+              ["🔧", "LangChain Docs", "Documentation officielle complète"],
+              ["⚡", "FastAPI Docs", "La meilleure documentation d'un framework ever"],
+            ].map(([icon, name, desc], i) => (
+              <div key={i} style={{ display: "flex", gap: 10, padding: "10px 14px", background: i % 2 === 0 ? "#f8fafc" : "white", borderRadius: 10, marginBottom: 4 }}>
+                <span style={{ fontSize: 20, flexShrink: 0 }}>{icon}</span>
+                <div>
+                  <div style={{ fontWeight: 700, fontSize: 13, color: "#1e293b" }}>{name}</div>
+                  <div style={{ fontSize: 12, color: "#64748b" }}>{desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ background: "white", borderRadius: 16, padding: 20, border: "1.5px solid #e2e8f0" }}>
+            <div style={{ fontWeight: 900, fontSize: 16, marginBottom: 14, color: "#1e293b" }}>🗓 Organisation Journalière Recommandée</div>
+            {[
+              ["☀️ Matin (2h)", "Nouveau contenu: vidéos, articles, documentation"],
+              ["💻 Après-midi (2-3h)", "Coding: exercices, projet en cours, expérimentations"],
+              ["📝 Soir (30-45min)", "Révision, notes Anki/Notion, push GitHub + commit message clair"],
+            ].map(([time, desc], i) => (
+              <div key={i} style={{ display: "flex", gap: 14, padding: "12px 14px", background: "#f8fafc", borderRadius: 12, marginBottom: 8 }}>
+                <div style={{ fontSize: 13, fontWeight: 800, color: "#7c3aed", minWidth: 120, flexShrink: 0 }}>{time}</div>
+                <div style={{ fontSize: 13, color: "#475569" }}>{desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {tab === "jobs" && (
+        <div>
+          <div style={{ background: "white", borderRadius: 16, padding: 20, marginBottom: 12, border: "1.5px solid #e2e8f0" }}>
+            <div style={{ fontWeight: 900, fontSize: 16, marginBottom: 4, color: "#1e293b" }}>🎯 Profils Cibles après 3 mois</div>
+            <div style={{ fontSize: 12, color: "#64748b", marginBottom: 16 }}>Salaires remote international (USD). Varie selon expérience et portfolio.</div>
+            {JOBS.map((j, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px", background: i % 2 === 0 ? "#f8fafc" : "white", borderRadius: 12, marginBottom: 8 }}>
+                <div>
+                  <div style={{ fontWeight: 800, fontSize: 14, color: "#1e293b" }}>{j.title}</div>
+                  <div style={{ fontSize: 12, color: "#22c55e", fontWeight: 700, marginTop: 2 }}>{j.salary}</div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontSize: 11, color: "#64748b", marginBottom: 3 }}>Demande marché</div>
+                  <div style={{ display: "flex", gap: 2 }}>
+                    {Array.from({ length: 5 }).map((_, k) => (
+                      <div key={k} style={{ width: 8, height: 8, borderRadius: "50%", background: k < j.demand ? "#f59e0b" : "#e2e8f0" }} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ background: "white", borderRadius: 16, padding: 20, marginBottom: 12, border: "1.5px solid #e2e8f0" }}>
+            <div style={{ fontWeight: 900, fontSize: 16, marginBottom: 14, color: "#1e293b" }}>📋 Checklist Portfolio Final (Mois 3)</div>
+            {[
+              ["✅ GitHub", "3 projets phares épinglés + README pro pour chaque"],
+              ["✅ HuggingFace Hub", "Modèles fine-tunés publiés + model cards"],
+              ["✅ Application déployée", "Au moins 1 app live avec URL publique"],
+              ["✅ LinkedIn", "Profil optimisé + 2-3 posts techniques"],
+              ["✅ CV", "ATS-friendly, 1 page, projets quantifiés"],
+              ["✅ Kaggle", "Au moins 1 compétition complétée, top 50%"],
+              ["✅ Blog technique", "1-2 articles sur Medium ou LinkedIn"],
+            ].map(([badge, text], i) => (
+              <div key={i} style={{ display: "flex", gap: 10, fontSize: 13, padding: "9px 12px", background: "#f0fdf4", borderRadius: 10, marginBottom: 7, color: "#166534" }}>
+                <span style={{ flexShrink: 0 }}>{badge}</span>
+                <span style={{ fontWeight: 500 }}>{text}</span>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ background: "linear-gradient(135deg, #1e1b4b, #312e81)", borderRadius: 16, padding: 20, color: "white" }}>
+            <div style={{ fontWeight: 900, fontSize: 16, marginBottom: 12 }}>🚀 Où chercher du travail ?</div>
+            {[
+              ["LinkedIn Jobs", "Filtrer: Remote, AI Engineer, ML Engineer, Junior"],
+              ["Otta.com", "Spécialisé tech, excellentes offres remote"],
+              ["Wellfound (AngelList)", "Startups tech — très ouvertes aux juniors avec projets"],
+              ["Remote.co / WeWorkRemotely", "Jobs 100% remote en AI/ML"],
+              ["Toptal / Upwork", "Freelance AI/ML pour construire expérience"],
+              ["HuggingFace Jobs", "Offres spécifiques AI/NLP"],
+            ].map(([platform, tip], i) => (
+              <div key={i} style={{ padding: "10px 12px", background: "rgba(255,255,255,0.1)", borderRadius: 10, marginBottom: 7 }}>
+                <div style={{ fontWeight: 800, fontSize: 13 }}>{platform}</div>
+                <div style={{ fontSize: 12, opacity: 0.7, marginTop: 2 }}>{tip}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div style={{ textAlign: "center", padding: "20px 0 8px", fontSize: 11, color: "#94a3b8" }}>
+        3 mois · 84 jours · 12 semaines · 12 mini-projets · 3 projets phares
+      </div>
+    </div>
+  );
+}
+
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<Roadmap />);
+</script>
+</body>
+</html>
